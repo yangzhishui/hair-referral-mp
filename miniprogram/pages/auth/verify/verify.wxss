@@ -1,0 +1,7 @@
+.status-card {
+  border-left: 8rpx solid #12a89c;
+}
+
+.status-card.pending {
+  border-left-color: #ff9800;
+}

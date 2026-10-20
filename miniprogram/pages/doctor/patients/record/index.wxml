@@ -1,0 +1,34 @@
+<view class="page page-pad-bottom">
+  <view wx:if="{{locked}}" class="card lock-tip">
+    <view class="t-md t-bold">🔒 该病历已锁定</view>
+    <view class="t-sm t-sub mt-8">医生创建并确认后自动锁定，医患双方仅可查看、不可修改</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">
+      <view>标准化病历模板</view>
+      <view wx:if="{{aiEnabled}}" class="t-sm t-primary">AI 总结</view>
+    </view>
+    <view class="t-xs t-sub mt-8">填写后自动同步患者端；确认后永久锁定</view>
+
+    <view class="rec-field" wx:for="{{fields}}" wx:key="key">
+      <view class="t-sm t-bold">{{item.name}}</view>
+      <textarea
+        wx:if="{{!locked}}"
+        class="textarea mt-8"
+        placeholder="{{item.placeholder}}"
+        value="{{values[item.key]}}"
+        data-field="{{item.key}}"
+        bindinput="onInput"
+      />
+      <view wx:else class="rec-view mt-8">{{values[item.key] || '未填写'}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!locked}}" class="fixed-bottom">
+    <view class="flex">
+      <button class="btn btn-ghost flex-1" style="margin-right:16rpx" bindtap="onSave">保存草稿</button>
+      <button class="btn btn-primary flex-1" bindtap="onConfirm">确认并锁定</button>
+    </view>
+  </view>
+</view>

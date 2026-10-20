@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "转诊结案",
+  "usingComponents": {
+    "img-uploader": "/components/img-uploader/index"
+  }
+}

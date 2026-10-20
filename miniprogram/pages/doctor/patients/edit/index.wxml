@@ -1,0 +1,52 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">基本信息（可手动录入）</view>
+    <view class="form-item">
+      <view class="form-label">患者姓名</view>
+      <input class="input" placeholder="请输入姓名" value="{{form.name}}" data-field="name" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">性别</view>
+      <picker mode="selector" range="{{genders}}" value="{{0}}" bindchange="onGender">
+        <view class="form-value">{{form.gender}}</view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <view class="form-label">年龄</view>
+      <input class="input" type="number" placeholder="请输入年龄" value="{{form.age}}" data-field="age" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">手机号</view>
+      <input class="input" type="number" maxlength="11" placeholder="请输入手机号" value="{{form.phone}}" data-field="phone" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">既往病史</view>
+      <textarea class="textarea" placeholder="如：高血压、糖尿病" value="{{form.pastHistory}}" data-field="pastHistory" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">过敏史</view>
+      <textarea class="textarea" placeholder="如：青霉素过敏" value="{{form.allergy}}" data-field="allergy" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">初诊主诉</view>
+      <textarea class="textarea" placeholder="患者自述症状" value="{{form.chiefComplaint}}" data-field="chiefComplaint" bindinput="onInput" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">初步诊断（脱发类型标签）</view>
+    <view class="mt-16">
+      <text
+        class="tag {{form.diagnosisTags.indexOf(item) > -1 ? '' : 'tag-gray'}}"
+        wx:for="{{tags}}"
+        wx:key="*this"
+        data-tag="{{item}}"
+        bindtap="toggleTag"
+      >{{item}}</text>
+    </view>
+  </view>
+
+  <view class="fixed-bottom">
+    <button class="btn btn-primary btn-block" disabled="{{saving}}" bindtap="onSave">保存</button>
+  </view>
+</view>

@@ -1,0 +1,22 @@
+.lock-tip {
+  background: #fff8e6;
+  border-left: 8rpx solid #ff9800;
+}
+
+.rec-field {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.rec-field:last-child {
+  border-bottom: none;
+}
+
+.rec-view {
+  font-size: 28rpx;
+  line-height: 1.7;
+  color: #33383f;
+  background: #fafbfc;
+  padding: 16rpx;
+  border-radius: 12rpx;
+}

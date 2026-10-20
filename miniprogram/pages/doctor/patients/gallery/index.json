@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "毛发临床影像",
+  "usingComponents": {
+    "empty": "/components/empty/index"
+  }
+}

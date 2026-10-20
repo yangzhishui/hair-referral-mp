@@ -1,0 +1,205 @@
+<view class="page page-pad-bottom">
+  <!-- 步骤条 -->
+  <view class="steps">
+    <view class="step {{step >= 1 ? 'on' : ''}}">1 选择患者</view>
+    <view class="step-line"></view>
+    <view class="step {{step >= 2 ? 'on' : ''}}">2 转诊目的</view>
+    <view class="step-line"></view>
+    <view class="step {{step >= 3 ? 'on' : ''}}">3 接诊对象</view>
+  </view>
+
+  <!-- STEP 1 -->
+  <block wx:if="{{step === 1}}">
+    <view wx:if="{{!patient}}" class="card center col" style="padding:60rpx 0">
+      <view class="t-sub mb-16">从患者管理列表选择需要转诊的患者</view>
+      <button class="btn btn-primary" bindtap="onPickPatient">选择患者</button>
+    </view>
+
+    <block wx:else>
+      <view class="card">
+        <view class="card-title">
+          <view>患者资料（自动带入）</view>
+          <view class="t-sm t-primary" bindtap="onPickPatient">更换</view>
+        </view>
+        <view class="flex mt-16">
+          <view class="avatar center">{{patient.name[0]}}</view>
+          <view class="col flex-1" style="margin-left:20rpx">
+            <view class="t-md t-bold">{{patient.name}} <text class="t-xs t-sub">{{patient.gender}} · {{patient.age}}岁</text></view>
+            <view class="t-xs t-sub mt-8">{{patient.phone}}</view>
+          </view>
+        </view>
+        <view class="divider"></view>
+        <view class="form-item">
+          <view class="form-label">初诊主诉</view>
+          <view class="form-value">{{patient.chiefComplaint || '未填写'}}</view>
+        </view>
+        <view class="form-item">
+          <view class="form-label">初步诊断</view>
+          <view class="form-value">
+            <text class="tag" wx:for="{{patient.diagnosisTags}}" wx:key="*this">{{item}}</text>
+          </view>
+        </view>
+        <view class="form-item">
+          <view class="form-label">影像照片</view>
+          <view class="form-value">共 {{imageCount}} 张（头皮全景 / 发际线 / 皮肤镜等）</view>
+        </view>
+        <view class="form-item">
+          <view class="form-label">格式化病历</view>
+          <view class="form-value">共 {{records.length}} 条{{records.length ? '（将同步给接诊医生）' : ''}}</view>
+        </view>
+      </view>
+    </block>
+  </block>
+
+  <!-- STEP 2 -->
+  <block wx:if="{{step === 2}}">
+    <view class="card">
+      <view class="card-title">本次转诊目的（必填）</view>
+      <view class="t-xs t-sub mt-8">可多选，本次转诊核心诉求</view>
+      <view class="mt-16">
+        <text
+          class="tag {{purpose.indexOf(item) > -1 ? '' : 'tag-gray'}}"
+          wx:for="{{purposes}}"
+          wx:key="*this"
+          data-item="{{item}}"
+          bindtap="togglePurpose"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">转诊说明（补充说明，选填）</view>
+      <textarea class="textarea mt-16" placeholder="如：患者合并高血压，需评估手术风险" value="{{remark}}" bindinput="onRemark" />
+    </view>
+  </block>
+
+  <!-- STEP 3 -->
+  <block wx:if="{{step === 3}}">
+    <view class="card">
+      <view class="card-title">维度筛选接诊医院 / 医生</view>
+
+      <view class="t-sm t-bold mt-16">按地区（省 / 市）</view>
+      <view class="mt-8">
+        <text class="tag {{allCountry ? '' : 'tag-gray'}}" bindtap="toggleAllCountry">全国一键全选</text>
+        <text
+          class="tag {{selectedProvinces.indexOf(item.name) > -1 ? '' : 'tag-gray'}}"
+          wx:for="{{provinces}}"
+          wx:key="name"
+          data-name="{{item.name}}"
+          bindtap="toggleProvince"
+        >{{item.name}}</text>
+      </view>
+      <view wx:if="{{cityOptions.length}}" class="mt-8">
+        <text
+          class="tag tag-blue {{selectedCities.indexOf(item) > -1 ? '' : 'tag-gray'}}"
+          wx:for="{{cityOptions}}"
+          wx:key="*this"
+          data-name="{{item}}"
+          bindtap="toggleCity"
+        >{{item}}</text>
+      </view>
+
+      <view class="t-sm t-bold mt-16">按诊疗项目</view>
+      <view class="mt-8">
+        <text class="tag {{selectedProject === '' ? '' : 'tag-gray'}}" data-name="" bindtap="onProject">不限</text>
+        <text
+          class="tag {{selectedProject === item ? '' : 'tag-gray'}}"
+          wx:for="{{projectOptions}}"
+          wx:key="*this"
+          data-name="{{item}}"
+          bindtap="onProject"
+        >{{item}}</text>
+      </view>
+
+      <view class="t-sm t-bold mt-16">按医生个人</view>
+      <view class="search-bar mt-8">
+        <text>🔍</text>
+        <input placeholder="搜索医生姓名 / 医院" value="{{doctorKeyword}}" bindinput="onDoctorKeyword" />
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">
+        <view>转诊模式</view>
+      </view>
+      <view class="segment mt-8">
+        <view class="segment-item {{mode === 'public' ? 'active' : ''}}" data-mode="public" bindtap="onMode">公开转诊（全国抢单池）</view>
+        <view class="segment-item {{mode === 'friend' ? 'active' : ''}}" data-mode="friend" bindtap="onMode">定向转诊（仅好友可见）</view>
+      </view>
+
+      <!-- 公开：医院 / 医生 -->
+      <block wx:if="{{mode === 'public'}}">
+        <view class="between mt-16">
+          <view class="t-sm t-bold">可接诊医院（{{candidateHospitals.length}}）</view>
+          <view class="t-sm t-primary" bindtap="selectAllHospitals">全选</view>
+        </view>
+        <view
+          class="pick-item {{selectedHospitalIds.indexOf(item._id) > -1 ? 'on' : ''}}"
+          wx:for="{{candidateHospitals}}"
+          wx:key="_id"
+          data-id="{{item._id}}"
+          bindtap="toggleHospital"
+        >
+          <view class="flex-1">
+            <view class="t-md t-bold">{{item.name}}</view>
+            <view class="t-xs t-sub mt-8">{{item.address}} · {{item.department}}</view>
+            <view class="t-xs t-sub mt-8" wx:if="{{item.projects.length}}">
+              项目：{{item.projects[0].name}}<block wx:if="{{item.projects.length > 1}}"> 等 {{item.projects.length}} 项</block>
+            </view>
+          </view>
+          <view class="pick-check">{{selectedHospitalIds.indexOf(item._id) > -1 ? '✓' : ''}}</view>
+        </view>
+
+        <view class="t-sm t-bold mt-24">指定医生（可选，{{candidateDoctors.length}}）</view>
+        <view
+          class="pick-item {{selectedDoctorIds.indexOf(item._id) > -1 ? 'on' : ''}}"
+          wx:for="{{candidateDoctors}}"
+          wx:key="_id"
+          data-id="{{item._id}}"
+          bindtap="toggleDoctor"
+        >
+          <view class="flex-1">
+            <view class="t-md t-bold">{{item.name}} <text class="t-xs t-sub">{{item.title}}</text></view>
+            <view class="t-xs t-sub mt-8">{{item.hospitalName}} · {{item.department}}</view>
+          </view>
+          <view class="pick-check">{{selectedDoctorIds.indexOf(item._id) > -1 ? '✓' : ''}}</view>
+        </view>
+      </block>
+
+      <!-- 好友定向 -->
+      <block wx:else>
+        <view class="t-sm t-bold mt-16">我的医生好友（{{friends.length}}）</view>
+        <view
+          class="pick-item {{selectedDoctorIds.indexOf(item._id) > -1 ? 'on' : ''}}"
+          wx:for="{{friends}}"
+          wx:key="_id"
+          data-id="{{item._id}}"
+          bindtap="toggleDoctor"
+        >
+          <view class="flex-1">
+            <view class="t-md t-bold">{{item.name}} <text class="t-xs t-sub">{{item.title}}</text></view>
+            <view class="t-xs t-sub mt-8">{{item.hospitalName}} · 擅长：{{item.specialties.join('、')}}</view>
+          </view>
+          <view class="pick-check">{{selectedDoctorIds.indexOf(item._id) > -1 ? '✓' : ''}}</view>
+        </view>
+        <empty wx:if="{{!friends.length}}" icon="🤝" text="还没有好友，请先到好友菜单添加" />
+      </block>
+    </view>
+
+    <view class="card rule-card">
+      <view class="t-sm t-bold">系统规则</view>
+      <view class="t-xs t-sub mt-8">· 一单可发给 1 位或多位医生 / 医院</view>
+      <view class="t-xs t-sub">· 任意医生接单后单据锁定，其他人无法抢单</view>
+      <view class="t-xs t-sub">· 72 小时无人接单系统自动取消，支持复制资料重发</view>
+      <view class="t-xs t-sub">· 好友定向转诊优先级高于公开抢单，并触发短信提醒</view>
+    </view>
+  </block>
+
+  <view class="fixed-bottom">
+    <view class="flex">
+      <button wx:if="{{step > 1}}" class="btn btn-gray" style="width:200rpx;margin-right:16rpx" bindtap="prev">上一步</button>
+      <button wx:if="{{step < 3}}" class="btn btn-primary flex-1" bindtap="next">下一步</button>
+      <button wx:else class="btn btn-primary flex-1" disabled="{{submitting}}" bindtap="submit">提交转诊单</button>
+    </view>
+  </view>
+</view>

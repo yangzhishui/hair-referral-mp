@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/entry/entry",
+    "pages/auth/login/login",
+    "pages/auth/verify/verify",
+    "pages/doctor/patients/list/index",
+    "pages/doctor/patients/detail/index",
+    "pages/doctor/patients/edit/index",
+    "pages/doctor/patients/record/index",
+    "pages/doctor/patients/gallery/index",
+    "pages/doctor/referral/list/index",
+    "pages/doctor/referral/create/index",
+    "pages/doctor/referral/detail/index",
+    "pages/doctor/referral/close/index",
+    "pages/doctor/friends/list/index",
+    "pages/doctor/mine/index",
+    "pages/doctor/mine/edit/index",
+    "pages/doctor/mine/hospital/index",
+    "pages/doctor/mine/messages/index",
+    "pages/patient/home/index",
+    "pages/patient/referral/detail/index",
+    "pages/patient/mine/index",
+    "pages/patient/mine/info/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#12a89c",
+    "navigationBarTitleText": "毛发专病医联体",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f7fa"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8a9099",
+    "selectedColor": "#12a89c",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/doctor/patients/list/index", "text": "患者管理" },
+      { "pagePath": "pages/doctor/referral/list/index", "text": "转诊" },
+      { "pagePath": "pages/doctor/friends/list/index", "text": "好友" },
+      { "pagePath": "pages/doctor/mine/index", "text": "我的" },
+      { "pagePath": "pages/patient/home/index", "text": "我的转诊" },
+      { "pagePath": "pages/patient/mine/index", "text": "我的" }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于按地区筛选可接诊的医院与医生"
+    }
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

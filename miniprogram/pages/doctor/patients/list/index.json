@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "患者管理",
+  "usingComponents": {
+    "empty": "/components/empty/index"
+  }
+}

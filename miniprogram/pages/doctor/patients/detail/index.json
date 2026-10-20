@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "患者档案",
+  "usingComponents": {
+    "empty": "/components/empty/index"
+  }
+}

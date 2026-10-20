@@ -1,0 +1,15 @@
+.msg-card.unread {
+  background: #e6f7f5;
+}
+
+.msg-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  flex-shrink: 0;
+}

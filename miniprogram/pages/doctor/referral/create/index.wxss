@@ -1,0 +1,61 @@
+.steps {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--sub);
+}
+
+.step.on {
+  color: #12a89c;
+  font-weight: 600;
+}
+
+.step-line {
+  width: 30rpx;
+  height: 2rpx;
+  background: var(--border);
+}
+
+.pick-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  margin-top: 16rpx;
+  border: 2rpx solid var(--border);
+  border-radius: 16rpx;
+}
+
+.pick-item.on {
+  border-color: #12a89c;
+  background: #e6f7f5;
+}
+
+.pick-check {
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 40rpx;
+  text-align: center;
+  border-radius: 50%;
+  border: 2rpx solid #dcdfe6;
+  color: #12a89c;
+  font-size: 26rpx;
+}
+
+.pick-item.on .pick-check {
+  background: #12a89c;
+  border-color: #12a89c;
+  color: #fff;
+}
+
+.rule-card {
+  background: #fff8e6;
+}

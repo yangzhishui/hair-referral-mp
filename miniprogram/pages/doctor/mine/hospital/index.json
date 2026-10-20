@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "医院信息",
+  "usingComponents": {
+    "empty": "/components/empty/index"
+  }
+}

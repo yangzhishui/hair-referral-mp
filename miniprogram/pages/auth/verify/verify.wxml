@@ -1,0 +1,58 @@
+<view class="page">
+  <view wx:if="{{auditStatus === 'approved'}}" class="card status-card approved">
+    <view class="t-md t-bold">✅ 已完成实名认证</view>
+    <view class="t-sm t-sub mt-8">您已通过资质审核，可正常使用全部转诊功能</view>
+  </view>
+  <view wx:elif="{{auditStatus === 'pending'}}" class="card status-card pending">
+    <view class="t-md t-bold">⏳ 审核中</view>
+    <view class="t-sm t-sub mt-8">资质已提交，管理员审核中，预计 1-2 个工作日</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">医生基本信息</view>
+    <view class="form-item">
+      <view class="form-label">姓名</view>
+      <input class="input" placeholder="请输入真实姓名" value="{{form.name}}" data-field="name" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">职称</view>
+      <picker mode="selector" range="{{['主任医师','副主任医师','主治医师','住院医师','执业医师']}}" value="{{titleIndex}}" bindchange="onTitleChange">
+        <view class="form-value">{{form.title}}</view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <view class="form-label">执业证号</view>
+      <input class="input" placeholder="请输入执业证编号" value="{{form.licenseNo}}" data-field="licenseNo" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">所属医院</view>
+      <picker mode="selector" range="{{hospitalNames}}" value="{{hospitalIndex}}" bindchange="onHospitalChange">
+        <view class="form-value">{{hospitalNames[hospitalIndex] || '请选择'}}</view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <view class="form-label">科室</view>
+      <input class="input" placeholder="如：毛发专病中心" value="{{form.department}}" data-field="department" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">擅长病种</view>
+      <input class="input" placeholder="多个用顿号分隔，如：雄秃、斑秃" value="{{form.specialties}}" data-field="specialties" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">擅长项目</view>
+      <input class="input" placeholder="如：FUE 植发、CGF 治疗" value="{{form.projects}}" data-field="projects" bindinput="onInput" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">执业证 / 资质证明</view>
+    <view class="t-xs t-sub mt-8">支持拍照或相册上传，可批量，单张可删除</view>
+    <view class="mt-16">
+      <img-uploader list="{{certImages}}" max="{{6}}" dir="cert" bind:change="onCertsChange" />
+    </view>
+  </view>
+
+  <view class="fixed-bottom">
+    <button class="btn btn-primary btn-block" disabled="{{submitting}}" bindtap="onSubmit">提交资质审核</button>
+  </view>
+</view>

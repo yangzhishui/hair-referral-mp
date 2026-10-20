@@ -1,0 +1,34 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">诊疗照片（可多选）</view>
+    <view class="mt-16">
+      <img-uploader list="{{images}}" max="{{9}}" dir="treatment" bind:change="onImagesChange" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">诊疗小结</view>
+    <textarea
+      class="textarea mt-16"
+      placeholder="本次诊疗过程、效果评估、后续建议"
+      value="{{summary}}"
+      data-field="summary"
+      bindinput="onInput"
+    />
+  </view>
+
+  <view class="card">
+    <view class="card-title">医嘱</view>
+    <textarea
+      class="textarea mt-16"
+      placeholder="用药、复诊、注意事项"
+      value="{{advice}}"
+      data-field="advice"
+      bindinput="onInput"
+    />
+  </view>
+
+  <view class="fixed-bottom">
+    <button class="btn btn-primary btn-block" disabled="{{submitting}}" bindtap="onSubmit">确认结案</button>
+  </view>
+</view>

@@ -1,0 +1,80 @@
+<view class="page" wx:if="{{referral}}">
+  <view class="card status-card status-{{referral.status}}">
+    <view class="t-lg t-bold">{{statusMap[referral.status].text}}</view>
+    <view class="t-sm t-sub mt-8">发起医生：{{referral.initiatorName}} · {{referral.initiatorHospital}}</view>
+    <view class="t-sm t-sub">发起时间：{{referral.createdText}}</view>
+    <view wx:if="{{referral.acceptedByName}}" class="t-sm t-primary mt-8">已被 {{referral.acceptedByName}} 医生接诊</view>
+    <view wx:if="{{referral.status === 'pending'}}" class="t-sm t-orange mt-8">剩余 {{referral.leftHours}} 小时无人接单将自动取消</view>
+    <view wx:if="{{referral.cancelReason}}" class="t-sm t-sub mt-8">{{referral.cancelReason}}</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">本次转诊目的与说明</view>
+    <view class="mt-16">
+      <text class="tag" wx:for="{{referral.purpose}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="t-sm mt-8">{{referral.remark || '医生未填写补充说明'}}</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">我的临床毛发影像</view>
+    <view wx:if="{{imageGroups.length}}">
+      <view class="img-group" wx:for="{{imageGroups}}" wx:key="key">
+        <view class="t-sm t-bold">{{item.name}}</view>
+        <view class="grid-3 mt-16">
+          <view class="grid-3-item" wx:for="{{item.list}}" wx:for-item="img" wx:key="_id">
+            <image wx:if="{{img.url}}" src="{{img.url}}" mode="aspectFill" data-url="{{img.url}}" bindtap="onPreview" />
+            <view wx:else class="ph">占位</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <empty wx:else icon="🖼" text="暂无影像资料" />
+  </view>
+
+  <view class="card">
+    <view class="card-title">标准化病历</view>
+    <view wx:if="{{records.length}}">
+      <view class="rec-item" wx:for="{{records}}" wx:key="_id">
+        <view class="between">
+          <view class="t-md t-bold">{{item.diagnosis || '初步诊断待填写'}}</view>
+          <text class="tag tag-gray">已锁定</text>
+        </view>
+        <view class="t-sm t-bold mt-16">主诉</view>
+        <view class="t-sm">{{item.chiefComplaint || '未填写'}}</view>
+        <view class="t-sm t-bold mt-16">现病史</view>
+        <view class="t-sm">{{item.presentIllness || '未填写'}}</view>
+        <view class="t-sm t-bold mt-16">个人史</view>
+        <view class="t-sm">{{item.personalHistory || '未填写'}}</view>
+        <view class="t-sm t-bold mt-16">专科查体</view>
+        <view class="t-sm">{{item.exam || '未填写'}}</view>
+        <view class="t-sm t-bold mt-16">处理意见</view>
+        <view class="t-sm">{{item.advice || '未填写'}}</view>
+        <view class="t-xs t-sub mt-16">由 {{item.doctorName}} 医生创建确认后锁定，医患双方均不可修改</view>
+      </view>
+    </view>
+    <empty wx:else icon="📝" text="暂无病历" />
+  </view>
+
+  <view class="card" wx:if="{{referral.treatment}}">
+    <view class="card-title">诊疗小结与医嘱</view>
+    <view class="grid-3 mt-16" wx:if="{{referral.treatment.images.length}}">
+      <view class="grid-3-item" wx:for="{{referral.treatment.images}}" wx:key="index">
+        <image src="{{item.url}}" mode="aspectFill" data-url="{{item.url}}" bindtap="onPreview" />
+      </view>
+    </view>
+    <view class="t-sm t-bold mt-16">诊疗小结</view>
+    <view class="t-sm mt-8">{{referral.treatment.summary || '无'}}</view>
+    <view class="t-sm t-bold mt-16">医嘱</view>
+    <view class="t-sm mt-8">{{referral.treatment.advice || '无'}}</view>
+    <view class="t-xs t-sub mt-16">结案医生：{{referral.treatment.closedBy}}</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">流转进度</view>
+    <view class="log-item" wx:for="{{referral.logs}}" wx:key="index">
+      <view class="t-sm">{{item.action}}</view>
+      <view class="t-xs t-sub">{{item.operator}} · {{item.timeText}}</view>
+    </view>
+  </view>
+</view>

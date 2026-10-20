@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="card welcome" wx:if="{{patient}}">
+    <view class="flex">
+      <view class="avatar center">{{patient.name[0]}}</view>
+      <view class="col flex-1" style="margin-left:20rpx">
+        <view class="t-lg t-bold">{{patient.name}}</view>
+        <view class="t-sm t-sub mt-8">{{patient.gender}} · {{patient.age}}岁 · {{patient.phone}}</view>
+      </view>
+    </view>
+    <view class="t-xs t-sub mt-16">主诊医生：{{patient.creatorName}} · 全部诊疗与转诊资料实时同步</view>
+  </view>
+
+  <view class="t-sm t-bold mb-16">我的转诊记录（{{list.length}}）</view>
+
+  <view wx:if="{{list.length}}">
+    <view class="card" wx:for="{{list}}" wx:key="_id" data-id="{{item._id}}" bindtap="onDetail">
+      <view class="between">
+        <view class="t-md t-bold">{{item.purpose.join('、')}}</view>
+        <text class="tag {{item.status === 'pending' ? 'tag-orange' : (item.status === 'closed' ? '' : 'tag-blue')}}">
+          {{statusMap[item.status].text}}
+        </text>
+      </view>
+      <view class="t-sm t-sub mt-8">发起医生：{{item.initiatorName}} · {{item.initiatorHospital}}</view>
+      <view class="t-xs t-sub mt-8">发起时间：{{item.createdText}}</view>
+      <view wx:if="{{item.acceptedByName}}" class="t-sm t-primary mt-8">已被 {{item.acceptedByName}} 医生接诊</view>
+      <view wx:if="{{item.status === 'pending'}}" class="t-xs t-orange mt-8">剩余 {{item.leftHours}} 小时无人接单将自动取消</view>
+      <view wx:if="{{item.status === 'cancelled'}}" class="t-xs t-sub mt-8">{{item.cancelReason}}</view>
+      <view wx:if="{{item.status === 'closed'}}" class="t-xs t-primary mt-8">已结案，可查看诊疗小结与医嘱</view>
+    </view>
+  </view>
+
+  <empty wx:else icon="📋" text="暂无转诊记录" />
+</view>

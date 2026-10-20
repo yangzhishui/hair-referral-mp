@@ -1,0 +1,11 @@
+<view class="grid-3">
+  <view class="grid-3-item" wx:for="{{items}}" wx:key="index">
+    <image wx:if="{{item.url || item.local}}" src="{{item.url || item.local}}" mode="aspectFill" bindtap="onPreview" data-index="{{index}}" />
+    <view wx:else class="ph" bindtap="onPreview" data-index="{{index}}">影像占位</view>
+    <view wx:if="{{!disabled}}" class="close-x" catchtap="onRemove" data-index="{{index}}">×</view>
+  </view>
+  <view wx:if="{{!disabled && items.length < max}}" class="grid-3-item grid-add" bindtap="onAdd">
+    <view class="plus">＋</view>
+    <view>拍照 / 相册</view>
+  </view>
+</view>

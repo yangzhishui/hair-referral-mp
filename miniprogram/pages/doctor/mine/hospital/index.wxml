@@ -1,0 +1,90 @@
+<view class="page page-pad-bottom" wx:if="{{hospital}}">
+  <view class="card">
+    <view class="card-title">
+      <view>医院基础信息</view>
+      <view class="t-sm t-primary" bindtap="toggleEdit">{{editing ? '完成编辑' : '编辑'}}</view>
+    </view>
+    <view class="t-xs t-sub mt-8">{{adminTip}}</view>
+
+    <view class="form-item">
+      <view class="form-label">医院名称</view>
+      <input wx:if="{{editing}}" class="input" value="{{hospital.name}}" data-field="name" bindinput="onInput" />
+      <view wx:else class="form-value">{{hospital.name}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">地址</view>
+      <input wx:if="{{editing}}" class="input" value="{{hospital.address}}" data-field="address" bindinput="onInput" />
+      <view wx:else class="form-value">{{hospital.address}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">科室</view>
+      <input wx:if="{{editing}}" class="input" value="{{hospital.department}}" data-field="department" bindinput="onInput" />
+      <view wx:else class="form-value">{{hospital.department}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">简介</view>
+      <textarea wx:if="{{editing}}" class="textarea" value="{{hospital.intro}}" data-field="intro" bindinput="onInput" />
+      <view wx:else class="form-value">{{hospital.intro}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">
+      <view>可开展毛发项目（{{hospital.projects.length}}）</view>
+      <view wx:if="{{editing}}" class="t-sm t-primary" bindtap="addProject">＋ 添加</view>
+    </view>
+    <view wx:if="{{hospital.projects.length}}">
+      <view class="proj-item" wx:for="{{hospital.projects}}" wx:key="index">
+        <block wx:if="{{editing}}">
+          <input class="input" placeholder="项目名称" value="{{item.name}}" data-index="{{index}}" data-sub="name" bindinput="onInput" />
+          <input class="input mt-8" placeholder="项目简介" value="{{item.desc}}" data-index="{{index}}" data-sub="desc" bindinput="onInput" />
+          <view class="flex mt-8">
+            <input class="input" placeholder="参考价格区间" value="{{item.priceRange}}" data-index="{{index}}" data-sub="priceRange" bindinput="onInput" />
+            <text class="t-sm t-red" style="margin-left:16rpx" data-index="{{index}}" bindtap="removeProject">删除</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="between">
+            <view class="t-md t-bold">{{item.name}}</view>
+            <text class="tag">{{item.priceRange}}</text>
+          </view>
+          <view class="t-xs t-sub mt-8">{{item.desc}}</view>
+        </block>
+      </view>
+    </view>
+    <empty wx:else icon="🏥" text="暂无项目信息" />
+    <view class="t-xs t-sub mt-16">* 项目与价格信息仅医生端可见，患者端隐藏（规避医疗合规风险）</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">门诊时间</view>
+    <view class="form-item">
+      <view class="form-label">日常出诊</view>
+      <input wx:if="{{editing}}" class="input" value="{{hospital.outpatientTime}}" data-field="outpatientTime" bindinput="onInput" />
+      <view wx:else class="form-value">{{hospital.outpatientTime}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">周末安排</view>
+      <input wx:if="{{editing}}" class="input" value="{{hospital.weekendTime}}" data-field="weekendTime" bindinput="onInput" />
+      <view wx:else class="form-value">{{hospital.weekendTime}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">本院在岗医生（{{hospital.doctors.length}}）</view>
+    <view class="cell" wx:for="{{hospital.doctors}}" wx:key="_id">
+      <view class="flex-1">
+        <view class="t-md t-bold">{{item.name}} <text class="t-xs t-sub">{{item.title}}</text></view>
+        <view class="t-xs t-sub mt-8">{{item.department}} · 擅长：{{item.specialties.join('、') || '未填写'}}</view>
+        <view class="t-xs t-sub mt-8" wx:if="{{item.schedule.length}}">
+          门诊：{{item.schedule[0].date}} {{item.schedule[0].period}}
+        </view>
+      </view>
+      <text class="tag {{item.auditStatus === 'approved' ? '' : 'tag-orange'}}">{{item.auditStatus === 'approved' ? '已认证' : '待审核'}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{editing}}" class="fixed-bottom">
+    <button class="btn btn-primary btn-block" bindtap="onSave">保存医院资料</button>
+  </view>
+</view>

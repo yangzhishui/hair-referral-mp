@@ -1,0 +1,8 @@
+.proj-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.proj-item:last-child {
+  border-bottom: none;
+}

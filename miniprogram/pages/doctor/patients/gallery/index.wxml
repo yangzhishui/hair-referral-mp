@@ -1,0 +1,59 @@
+<view class="page page-pad-bottom">
+  <scroll-view scroll-x class="cat-bar">
+    <view
+      class="cat-item {{active === item.key ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      bindtap="switchCategory"
+    >{{item.name}}</view>
+  </scroll-view>
+
+  <view class="between mb-16">
+    <view class="t-sm t-sub">共 {{viewList.length}} 张 · 由近到远</view>
+    <view class="t-sm t-primary" bindtap="toggleCompare">{{compareMode ? '退出对比' : '选择对比'}}</view>
+  </view>
+
+  <view wx:if="{{viewList.length}}" class="grid-3">
+    <view class="grid-3-item img-box" wx:for="{{viewList}}" wx:key="_id">
+      <image wx:if="{{item.url}}" src="{{item.url}}" mode="aspectFill" data-index="{{index}}" data-id="{{item._id}}" bindtap="{{compareMode ? 'toggleSelect' : 'onPreview'}}" />
+      <view wx:else class="ph">占位</view>
+      <view class="img-mask" wx:if="{{compareMode}}" data-id="{{item._id}}" bindtap="toggleSelect">
+        <view class="check {{selected.indexOf(item._id) > -1 ? 'checked' : ''}}">{{selected.indexOf(item._id) > -1 ? '✓' : ''}}</view>
+      </view>
+      <view class="img-info" wx:if="{{!compareMode}}">
+        <view class="t-xs">{{item.name}}</view>
+        <view class="t-xs">{{item.takenText}}</view>
+      </view>
+      <view wx:if="{{!compareMode}}" class="close-x" data-id="{{item._id}}" catchtap="onRemove">×</view>
+    </view>
+    <view class="grid-3-item grid-add" bindtap="onAdd">
+      <view class="plus">＋</view>
+      <view>拍照 / 相册</view>
+    </view>
+  </view>
+
+  <empty wx:else icon="🖼" text="该分类暂无照片，点击右侧添加" />
+
+  <view wx:if="{{compareMode && selected.length === 2}}" class="fixed-bottom">
+    <button class="btn btn-primary btn-block" bindtap="startCompare">开始对比（{{selected.length}}/2）</button>
+  </view>
+
+  <!-- 对比弹层 -->
+  <view wx:if="{{comparePair}}" class="mask" bindtap="closeCompare">
+    <view class="compare-box" catchtap="noop">
+      <view class="t-md t-bold center">影像对比</view>
+      <view class="flex mt-16">
+        <view class="flex-1" style="margin-right:8rpx">
+          <image class="cmp-img" src="{{comparePair[0].url}}" mode="aspectFit" />
+          <view class="t-xs t-sub center">{{comparePair[0].takenText}}</view>
+        </view>
+        <view class="flex-1" style="margin-left:8rpx">
+          <image class="cmp-img" src="{{comparePair[1].url}}" mode="aspectFit" />
+          <view class="t-xs t-sub center">{{comparePair[1].takenText}}</view>
+        </view>
+      </view>
+      <button class="btn btn-gray btn-block mt-24" bindtap="closeCompare">关闭</button>
+    </view>
+  </view>
+</view>

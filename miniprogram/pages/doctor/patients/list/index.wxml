@@ -1,0 +1,41 @@
+<view class="page page-pad-bottom">
+  <view class="search-bar">
+    <text>🔍</text>
+    <input placeholder="搜索患者姓名 / 手机号" value="{{keyword}}" bindinput="onSearch" confirm-type="search" />
+  </view>
+
+  <view wx:if="{{list.length}}">
+    <view
+      class="card patient-card"
+      wx:for="{{list}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      bindtap="onDetail"
+    >
+      <view class="between">
+        <view class="flex">
+          <view class="avatar center">{{item.name[0]}}</view>
+          <view class="col" style="margin-left:20rpx">
+            <view class="t-md t-bold">{{item.name}} <text class="t-xs t-sub">{{item.gender}} · {{item.age}}岁</text></view>
+            <view class="t-xs t-sub mt-8">{{item.phone}}</view>
+          </view>
+        </view>
+        <view class="arrow"></view>
+      </view>
+      <view class="divider"></view>
+      <view class="between t-xs t-sub">
+        <view>建档：{{item.createdAtText}}</view>
+        <view>最近转诊：{{item.lastReferralText}}</view>
+      </view>
+      <view class="mt-8" wx:if="{{item.diagnosisTags.length}}">
+        <text class="tag" wx:for="{{item.diagnosisTags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+      </view>
+    </view>
+  </view>
+
+  <empty wx:else icon="👥" text="{{keyword ? '未找到匹配的患者' : '还没有患者档案，点击底部按钮新建'}}" />
+
+  <view class="fixed-bottom" wx:if="{{!pickMode}}">
+    <button class="btn btn-primary btn-block" bindtap="onAdd">＋ 新建患者档案</button>
+  </view>
+</view>

@@ -1,0 +1,98 @@
+<view class="page page-pad-bottom" wx:if="{{patient}}">
+  <!-- 头部 -->
+  <view class="card patient-head">
+    <view class="flex">
+      <view class="avatar-lg center">{{patient.name[0]}}</view>
+      <view class="col flex-1" style="margin-left:24rpx">
+        <view class="t-lg t-bold">{{patient.name}}</view>
+        <view class="t-sm t-sub mt-8">{{patient.gender}} · {{patient.age}}岁 · {{patient.phone}}</view>
+        <view class="mt-8" wx:if="{{patient.diagnosisTags.length}}">
+          <text class="tag" wx:for="{{patient.diagnosisTags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="between t-xs t-sub">
+      <view>建档医生：{{patient.creatorName}}</view>
+      <view>最近转诊：{{patient.lastReferralText}}</view>
+    </view>
+  </view>
+
+  <!-- 模块 1 -->
+  <view class="card">
+    <view class="card-title">
+      <view>基本信息</view>
+      <view class="t-sm t-primary" bindtap="onEditBase">编辑</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">初诊主诉</view>
+      <view class="form-value">{{patient.chiefComplaint || '未填写'}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">既往病史</view>
+      <view class="form-value">{{patient.pastHistory || '未填写'}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">过敏史</view>
+      <view class="form-value">{{patient.allergy || '未填写'}}</view>
+    </view>
+  </view>
+
+  <!-- 模块 2 -->
+  <view class="card">
+    <view class="card-title">
+      <view>毛发临床影像（{{imageCount}}）</view>
+      <view class="t-sm t-primary" bindtap="onGallery">管理 / 上传</view>
+    </view>
+    <view wx:if="{{imageGroups.length}}">
+      <view class="img-group" wx:for="{{imageGroups}}" wx:key="key">
+        <view class="t-sm t-bold">{{item.name}}</view>
+        <view class="grid-3 mt-16">
+          <view class="grid-3-item" wx:for="{{item.list}}" wx:for-item="img" wx:key="_id">
+            <image wx:if="{{img.url}}" src="{{img.url}}" mode="aspectFill" data-url="{{img.url}}" bindtap="onPreview" />
+            <view wx:else class="ph">影像占位</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <empty wx:else icon="🖼" text="暂无影像资料，点击右上角上传" />
+  </view>
+
+  <!-- 模块 3 -->
+  <view class="card">
+    <view class="card-title">
+      <view>格式化病历</view>
+      <view class="t-sm t-primary" bindtap="onRecord">新建 / 编辑</view>
+    </view>
+    <view wx:if="{{records.length}}">
+      <view class="record-item" wx:for="{{records}}" wx:key="_id" data-id="{{item._id}}" bindtap="onRecord">
+        <view class="between">
+          <view class="t-md t-bold">{{item.diagnosis || '未填写初步诊断'}}</view>
+          <text class="tag {{item.locked ? 'tag-gray' : 'tag-orange'}}">{{item.locked ? '已锁定' : '草稿'}}</text>
+        </view>
+        <view class="t-xs t-sub mt-8">更新：{{item.updatedText}} · {{item.doctorName}}</view>
+      </view>
+    </view>
+    <empty wx:else icon="📝" text="暂无病历记录" />
+  </view>
+
+  <!-- 转诊记录 -->
+  <view class="card">
+    <view class="card-title">转诊记录</view>
+    <view wx:if="{{referrals.length}}">
+      <view class="cell" wx:for="{{referrals}}" wx:key="_id" data-id="{{item._id}}" bindtap="onReferralDetail">
+        <view class="col flex-1">
+          <view class="t-md">{{item.purpose.join('、')}}</view>
+          <view class="t-xs t-sub mt-8">{{item.createdText}}</view>
+        </view>
+        <text class="tag">{{statusMap[item.status].text}}</text>
+        <view class="arrow"></view>
+      </view>
+    </view>
+    <empty wx:else icon="🔁" text="暂无转诊记录" />
+  </view>
+
+  <view class="fixed-bottom">
+    <button class="btn btn-primary btn-block" bindtap="onReferralCreate">发起转诊</button>
+  </view>
+</view>

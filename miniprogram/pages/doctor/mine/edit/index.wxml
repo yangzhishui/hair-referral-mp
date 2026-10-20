@@ -1,0 +1,54 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">医生头像</view>
+    <view class="mt-16" style="max-width:220rpx">
+      <img-uploader list="{{avatar}}" max="{{1}}" dir="avatar" bind:change="onAvatarChange" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">个人资料</view>
+    <view class="form-item">
+      <view class="form-label">擅长病种</view>
+      <input class="input" placeholder="多个用顿号分隔" value="{{specialties}}" data-field="specialties" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">擅长项目</view>
+      <input class="input" placeholder="如：FUE 植发、CGF 治疗" value="{{projects}}" data-field="projects" bindinput="onInput" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">联系电话</view>
+      <input class="input" type="number" maxlength="11" placeholder="用于接收短信提醒" value="{{phone}}" data-field="phone" bindinput="onInput" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">可预约出诊时间</view>
+    <view class="flex mt-16">
+      <picker mode="date" value="{{date}}" bindchange="onDate">
+        <view class="sch-date">{{date || '选择日期'}}</view>
+      </picker>
+      <input class="input" style="margin-left:16rpx" placeholder="如：上午 08:30 - 12:00" value="{{period}}" data-field="period" bindinput="onInput" />
+    </view>
+    <button class="btn btn-ghost btn-block mt-16" bindtap="addSchedule">添加时段</button>
+    <view class="mt-16">
+      <view class="cell" wx:for="{{schedule}}" wx:key="index">
+        <view>{{item.date}} · {{item.period}}</view>
+        <text class="t-sm t-red" data-index="{{index}}" bindtap="removeSchedule">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">修改密码</view>
+    <view class="form-item">
+      <view class="form-label">新密码</view>
+      <input class="input" password placeholder="至少 6 位" value="{{password}}" data-field="password" bindinput="onInput" />
+    </view>
+    <button class="btn btn-ghost btn-block mt-16" bindtap="onChangePassword">确认修改</button>
+  </view>
+
+  <view class="fixed-bottom">
+    <button class="btn btn-primary btn-block" bindtap="onSave">保存资料</button>
+  </view>
+</view>

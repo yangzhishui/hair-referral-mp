@@ -1,0 +1,87 @@
+<view class="page page-pad-bottom">
+  <view class="card" wx:if="{{doctor}}">
+    <view class="flex">
+      <view class="avatar-lg center">{{doctor.name[0]}}</view>
+      <view class="col flex-1" style="margin-left:24rpx">
+        <view class="t-lg t-bold">{{doctor.name}}</view>
+        <view class="t-sm t-sub mt-8">{{doctor.title}} · {{doctor.department}}</view>
+        <view class="mt-8">
+          <text class="tag {{doctor.auditStatus === 'approved' ? '' : 'tag-orange'}}">
+            {{doctor.auditStatus === 'approved' ? '已认证' : '待审核'}}
+          </text>
+          <text class="tag tag-gray">执业证号 {{doctor.licenseNo}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="form-item">
+      <view class="form-label">所属医院</view>
+      <view class="form-value">{{doctor.hospitalName}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">擅长病种</view>
+      <view class="form-value">{{doctor.specialties.join('、') || '未填写'}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">擅长项目</view>
+      <view class="form-value">{{doctor.projects.join('、') || '未填写'}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">联系电话</view>
+      <view class="form-value">{{doctor.phone || '未绑定'}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">未来 3 天可预约出诊时段</view>
+    <view wx:if="{{schedule.length}}">
+      <view class="cell" wx:for="{{schedule}}" wx:key="index">
+        <view class="t-md">{{item.dateText}}</view>
+        <text class="tag">{{item.period}}</text>
+      </view>
+    </view>
+    <view wx:else class="t-sm t-sub mt-8">暂无排班，可在修改资料中补充</view>
+  </view>
+
+  <view class="card" wx:if="{{stats}}">
+    <view class="card-title">我的积分与转诊统计</view>
+    <view class="stat-row">
+      <view class="stat-item"><view class="t-lg t-primary">{{stats.points}}</view><view class="t-xs t-sub">积分</view></view>
+      <view class="stat-item"><view class="t-lg">{{stats.initiated}}</view><view class="t-xs t-sub">发起量</view></view>
+      <view class="stat-item"><view class="t-lg">{{stats.accepted}}</view><view class="t-xs t-sub">接诊量</view></view>
+      <view class="stat-item"><view class="t-lg">{{stats.closeRate}}</view><view class="t-xs t-sub">结案率</view></view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">短信定时提醒</view>
+    <view class="t-xs t-sub mt-8">
+      系统后台自动定时触发：出诊前 3 天首次提醒、出诊前 1 天二次提醒，并同步小程序消息；定向到个人或医院的转诊同样触发短信。
+    </view>
+    <view class="t-xs t-sub mt-8">接收号码：{{doctor.phone || '未绑定'}}</view>
+  </view>
+
+  <view class="card">
+    <view class="cell" bindtap="goQualification">
+      <view>身份资质核验</view>
+      <view class="flex"><text class="t-xs t-sub">上传执业证 / 查看审核进度</text><view class="arrow"></view></view>
+    </view>
+    <view class="cell" bindtap="goMessages">
+      <view>消息中心</view>
+      <view class="flex">
+        <text wx:if="{{unread}}" class="badge-dot">{{unread}}</text>
+        <view class="arrow"></view>
+      </view>
+    </view>
+    <view class="cell" bindtap="goHospital">
+      <view>我的医院</view>
+      <view class="flex"><text class="t-xs t-sub">{{hospital.name}}</text><view class="arrow"></view></view>
+    </view>
+    <view class="cell" bindtap="goEdit">
+      <view>修改资料 / 修改密码</view>
+      <view class="arrow"></view>
+    </view>
+  </view>
+
+  <button class="btn btn-gray btn-block" bindtap="onLogout">退出登录</button>
+</view>

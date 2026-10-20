@@ -1,0 +1,61 @@
+<view class="page">
+  <view class="search-bar">
+    <text>🔍</text>
+    <input placeholder="搜索医生：姓名 / 医院" value="{{keyword}}" bindinput="onInput" confirm-type="search" />
+  </view>
+
+  <block wx:if="{{keyword}}">
+    <view class="card">
+      <view class="card-title">搜索结果（{{results.length}}）</view>
+      <view wx:if="{{results.length}}">
+        <view class="cell" wx:for="{{results}}" wx:key="_id">
+          <view class="flex-1">
+            <view class="t-md t-bold">{{item.name}} <text class="t-xs t-sub">{{item.title}}</text></view>
+            <view class="t-xs t-sub mt-8">{{item.hospitalName}} · {{item.department}}</view>
+            <view class="t-xs t-sub mt-8">擅长：{{item.specialties.join('、') || '未填写'}}</view>
+          </view>
+          <button wx:if="{{item.friendStatus === 'none'}}" class="btn btn-primary btn-sm" data-id="{{item._id}}" bindtap="onApply">添加</button>
+          <text wx:elif="{{item.friendStatus === 'pending'}}" class="tag tag-orange">待通过</text>
+          <text wx:else class="tag tag-gray">已添加</text>
+        </view>
+      </view>
+      <empty wx:else icon="🔍" text="未找到相关医生" />
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="card" wx:if="{{pending.length}}">
+      <view class="card-title">好友申请（{{pending.length}}）</view>
+      <view class="cell" wx:for="{{pending}}" wx:key="_id">
+        <view class="flex-1">
+          <view class="t-md t-bold">{{item.name}} <text class="t-xs t-sub">{{item.title}}</text></view>
+          <view class="t-xs t-sub mt-8">{{item.hospitalName}} · {{item.department}}</view>
+        </view>
+        <button class="btn btn-primary btn-sm" data-id="{{item.requestId}}" data-accept="{{true}}" bindtap="onHandle">通过</button>
+        <button class="btn btn-gray btn-sm" style="margin-left:12rpx" data-id="{{item.requestId}}" data-accept="{{false}}" bindtap="onHandle">拒绝</button>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">我的好友（{{friends.length}}）</view>
+      <view wx:if="{{friends.length}}">
+        <view class="cell" wx:for="{{friends}}" wx:key="_id">
+          <view class="avatar-sm center" style="margin-right:20rpx">{{item.name[0]}}</view>
+          <view class="flex-1">
+            <view class="t-md t-bold">{{item.name}} <text class="t-xs t-sub">{{item.title}}</text></view>
+            <view class="t-xs t-sub mt-8">{{item.hospitalName}} · 擅长：{{item.specialties.join('、') || '未填写'}}</view>
+          </view>
+          <text class="tag">已添加</text>
+        </view>
+      </view>
+      <empty wx:else icon="🤝" text="搜索医生姓名或医院，建立您的私域转诊池" />
+    </view>
+
+    <view class="card">
+      <view class="t-sm t-bold">核心业务价值</view>
+      <view class="t-xs t-sub mt-8">· 建立医生私域转诊池，定向转诊不进入公开抢单池</view>
+      <view class="t-xs t-sub">· 仅好友可见、可接单，适合长期合作与上下级医联体转诊</view>
+      <view class="t-xs t-sub">· 好友定向转诊优先级高于公开抢单，并触发短信提醒</view>
+    </view>
+  </block>
+</view>

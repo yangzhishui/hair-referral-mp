@@ -1,0 +1,29 @@
+<view class="entry">
+  <view class="hero">
+    <view class="hero-title">毛发专病医联体</view>
+    <view class="hero-sub">全国转诊平台 · 医生端 / 患者端</view>
+  </view>
+
+  <view class="entry-card" data-role="doctor" bindtap="onChoose">
+    <view class="entry-icon doctor">🩺</view>
+    <view class="flex-1">
+      <view class="t-lg">医生端入口</view>
+      <view class="t-sm t-sub mt-8">实名认证入驻 · 患者管理 · 全国抢单与好友定向转诊</view>
+    </view>
+    <view class="arrow"></view>
+  </view>
+
+  <view class="entry-card" data-role="patient" bindtap="onChoose">
+    <view class="entry-icon patient">🧑</view>
+    <view class="flex-1">
+      <view class="t-lg">患者端入口</view>
+      <view class="t-sm t-sub mt-8">查看转诊进度 · 同步病历影像 · 个人基础信息维护</view>
+    </view>
+    <view class="arrow"></view>
+  </view>
+
+  <view wx:if="{{mockMode}}" class="mock-tip">
+    当前为本地演示数据模式（未配置云环境 ID），全流程可直接点通；
+    配置 miniprogram/config/env.js 中的 cloudEnv 后自动切换真实云开发数据。
+  </view>
+</view>

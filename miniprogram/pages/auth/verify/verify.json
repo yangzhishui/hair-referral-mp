@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "身份资质核验",
+  "usingComponents": {
+    "img-uploader": "/components/img-uploader/index"
+  }
+}

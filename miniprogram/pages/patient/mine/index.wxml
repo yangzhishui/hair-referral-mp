@@ -1,0 +1,72 @@
+<view class="page page-pad-bottom">
+  <view class="card" wx:if="{{patient}}">
+    <view class="flex">
+      <view class="avatar-lg center">{{patient.name[0]}}</view>
+      <view class="col flex-1" style="margin-left:24rpx">
+        <view class="t-lg t-bold">{{patient.name}}</view>
+        <view class="t-sm t-sub mt-8">{{patient.gender}} · {{patient.age}}岁 · {{patient.phone}}</view>
+        <view class="mt-8">
+          <text class="tag" wx:for="{{patient.diagnosisTags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="form-item">
+      <view class="form-label">既往病史</view>
+      <view class="form-value">{{patient.pastHistory || '未填写'}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">过敏史</view>
+      <view class="form-value">{{patient.allergy || '未填写'}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-label">初诊主诉</view>
+      <view class="form-value">{{patient.chiefComplaint || '未填写'}}</view>
+    </view>
+    <button class="btn btn-ghost btn-block mt-24" bindtap="onEdit">自主维护基础信息</button>
+    <view class="t-xs t-sub mt-8">修改后实时双向同步至医生端</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">我的毛发影像（{{images.length}}）</view>
+    <view wx:if="{{images.length}}" class="grid-3 mt-16">
+      <view class="grid-3-item" wx:for="{{images}}" wx:key="_id">
+        <image wx:if="{{item.url}}" src="{{item.url}}" mode="aspectFill" data-url="{{item.url}}" bindtap="onPreview" />
+        <view wx:else class="ph">占位</view>
+      </view>
+    </view>
+    <empty wx:else icon="🖼" text="暂无影像资料" />
+  </view>
+
+  <view class="card">
+    <view class="card-title">医生填写的病历（只读）</view>
+    <view wx:if="{{records.length}}">
+      <view class="rec-item" wx:for="{{records}}" wx:key="_id">
+        <view class="between">
+          <view class="t-md t-bold">{{item.diagnosis || '初步诊断待填写'}}</view>
+          <text class="tag tag-gray">已锁定</text>
+        </view>
+        <view class="t-xs t-sub mt-8">{{item.doctorName}} 医生创建 · 确认后永久锁定</view>
+        <view class="t-sm mt-8">主诉：{{item.chiefComplaint || '未填写'}}</view>
+        <view class="t-sm mt-8">处理意见：{{item.advice || '未填写'}}</view>
+      </view>
+    </view>
+    <empty wx:else icon="📝" text="暂无病历" />
+  </view>
+
+  <view class="card">
+    <view class="card-title">消息提醒</view>
+    <view wx:if="{{messages.length}}">
+      <view class="msg-item" wx:for="{{messages}}" wx:key="_id">
+        <view class="between">
+          <view class="t-sm t-bold">{{item.title}}</view>
+          <view class="t-xs t-sub">{{item.timeText}}</view>
+        </view>
+        <view class="t-xs t-sub mt-8">{{item.content}}</view>
+      </view>
+    </view>
+    <empty wx:else icon="🔔" text="暂无消息" />
+  </view>
+
+  <button class="btn btn-gray btn-block" bindtap="onLogout">退出登录</button>
+</view>

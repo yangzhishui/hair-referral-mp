@@ -1,0 +1,10 @@
+.empty {
+  padding: 120rpx 0;
+  text-align: center;
+  color: var(--sub, #8a9099);
+}
+
+.empty-icon {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
+}

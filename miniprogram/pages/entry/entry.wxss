@@ -1,0 +1,61 @@
+.entry {
+  padding: 40rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
+  min-height: 100vh;
+  background: linear-gradient(180deg, #12a89c 0%, #f5f7fa 320rpx);
+}
+
+.hero {
+  padding: 60rpx 0 60rpx;
+  color: #fff;
+}
+
+.hero-title {
+  font-size: 52rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.hero-sub {
+  font-size: 26rpx;
+  opacity: 0.9;
+  margin-top: 12rpx;
+}
+
+.entry-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 36rpx 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 30rpx rgba(18, 168, 156, 0.12);
+}
+
+.entry-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46rpx;
+  margin-right: 24rpx;
+}
+
+.entry-icon.doctor {
+  background: #e6f7f5;
+}
+
+.entry-icon.patient {
+  background: #eaf1ff;
+}
+
+.mock-tip {
+  margin-top: 40rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  background: #fff8e6;
+  color: #a06a00;
+  font-size: 24rpx;
+  line-height: 1.7;
+}

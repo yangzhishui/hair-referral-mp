@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="between mb-16">
+    <view class="t-sm t-sub">全部消息</view>
+    <view class="t-sm t-primary" bindtap="onReadAll">全部标记已读</view>
+  </view>
+
+  <view wx:if="{{list.length}}">
+    <view
+      class="card msg-card {{item.read ? '' : 'unread'}}"
+      wx:for="{{list}}"
+      wx:key="_id"
+      data-index="{{index}}"
+      bindtap="onTap"
+    >
+      <view class="flex">
+        <view class="msg-icon">{{icons[item.type]}}</view>
+        <view class="col flex-1" style="margin-left:20rpx">
+          <view class="between">
+            <view class="t-md t-bold">{{item.title}}</view>
+            <view class="t-xs t-sub">{{item.timeText}}</view>
+          </view>
+          <view class="t-sm t-sub mt-8">{{item.content}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <empty wx:else icon="🔔" text="暂无消息" />
+</view>

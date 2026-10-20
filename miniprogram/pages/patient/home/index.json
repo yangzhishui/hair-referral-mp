@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的转诊",
+  "usingComponents": {
+    "empty": "/components/empty/index"
+  }
+}

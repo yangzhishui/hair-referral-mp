@@ -1,0 +1,39 @@
+<view class="page page-pad-bottom">
+  <view class="segment">
+    <view
+      class="segment-item {{active === item.key ? 'active' : ''}}"
+      wx:for="{{tabs}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      bindtap="onTab"
+    >{{item.text}}</view>
+  </view>
+
+  <view wx:if="{{list.length}}">
+    <view class="card" wx:for="{{list}}" wx:key="_id" data-id="{{item._id}}" bindtap="onDetail">
+      <view class="between">
+        <view class="t-md t-bold">{{item.patientName}}</view>
+        <text class="tag {{item.status === 'pending' ? 'tag-orange' : (item.status === 'closed' ? '' : 'tag-blue')}}">
+          {{statusMap[item.status].text}}
+        </text>
+      </view>
+      <view class="t-sm t-sub mt-8">转诊目的：{{item.purpose.join('、')}}</view>
+      <view class="t-xs t-sub mt-8">
+        <block wx:if="{{active === 'mine'}}">发起：{{item.createdText}}</block>
+        <block wx:elif="{{active === 'pool'}}">{{item.initiatorName}} · {{item.initiatorHospital}} 发起 · {{item.createdText}}</block>
+        <block wx:elif="{{active === 'accepted'}}">接诊于 {{item.createdText}}</block>
+        <block wx:else>{{item.initiatorName}} 发起 · {{item.createdText}}</block>
+      </view>
+      <view wx:if="{{item.status === 'pending'}}" class="t-xs t-orange mt-8">
+        {{item.targetType === 'friend' ? '好友定向转诊' : '公开抢单池'}} · 剩余 {{item.leftHours}} 小时自动取消
+      </view>
+      <view wx:if="{{item.status === 'closed'}}" class="t-xs t-primary mt-8">已于 {{item.createdText}} 结案</view>
+    </view>
+  </view>
+
+  <empty wx:else icon="🔁" text="暂无转诊单" />
+
+  <view class="fixed-bottom">
+    <button class="btn btn-primary btn-block" bindtap="onCreate">＋ 发起转诊</button>
+  </view>
+</view>

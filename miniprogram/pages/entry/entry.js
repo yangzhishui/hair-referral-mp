@@ -12,6 +12,6 @@ Page({
   onChoose(e) {
     const role = e.currentTarget.dataset.role
     wx.setStorageSync('entryRole', role)
-    wx.navigateTo({ url: `/pages/auth/login?role=${role}` })
+    wx.navigateTo({ url: `/pages/auth/login/login?role=${role}` })
   }
 })
